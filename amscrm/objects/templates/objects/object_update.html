@@ -1,0 +1,24 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="max-w-lg mx-auto">
+    <a class="hover:text-blue-500" href="{% url 'objects:object-list' %}">
+        К списку Объектов
+    </a>
+    <div class="py-5 border-t border-gray-200">
+        <h1 class="text-4xl text-gray-800">Редактирование Объекта</h1>
+    </div>
+        <div class="mt-5 py-5 border-t border-gray-200">
+            <a href="{% url 'objects:object-delete' object.pk %}" class="w-1/2 mt-3 text-white bg-indigo-500 border-0 py-2 px-6 focus:outline-none hover:bg-indigo-600 rounded">
+              Удалить
+            </a>
+        </div>
+    <form method="post" class="mt-5 bg-blue-200">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit" class="mt-5 w-full text-white bg-blue-500 hover:bg-blue-600 px-3 py-3 rounded-md">
+            Подтвердить
+        </button>
+    </form>
+</div>
+{% endblock content %}

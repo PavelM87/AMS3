@@ -1,0 +1,22 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="w-full max-w-lg mx-auto">
+    <a class="hover:text-blue-500" href="{% url 'users:user-list' %}">
+        К списку Пользователеӣ
+    </a>
+    <div class="py-5 border-t border-gray-200">
+        <h1 class="text-4xl text-gray-800">
+            ДОБАВЛЕНИЕ Пользователя
+        </h1>
+    </div>
+    <form method="post" class="mt-5 bg-blue-200">
+        {% csrf_token %}
+        {{ form.as_p }}
+
+        <button type="submit" class="mt-5 w-full text-white bg-blue-500 hover:bg-blue-600 px-3 py-3 rounded-md">
+            Подтвердить
+        </button>
+    </form>
+</div>
+{% endblock content %}

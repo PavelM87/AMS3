@@ -1,0 +1,133 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<section class="text-gray-600 body-font overflow-hidden">
+  <div class="container px-5 py-24 mx-auto">
+    <div class="lg:w-4/5 mx-auto flex flex-wrap">
+      <div class="w-full lg:pr-10 lg:py-6 mb-6 lg:mb-0">
+        <h2 class="text-sm title-font text-gray-500 tracking-widest">Объект</h2>
+        <h1 class="text-gray-900 text-3xl title-font font-medium mb-4">{{ object.objReg }} {{ object.objNum }}</h1>
+        <div class="flex mb-4">
+          <a href="{% url 'objects:object-detail' object.pk%}" class="flex-grow text-indigo-500 border-b-2 border-indigo-500 py-2 text-lg px-1">
+              Просмотр
+          </a>
+          <a href="{% url 'objects:object-update' object.pk%}" class="flex-grow text-indigo-500 border-b-2 border-indigo-500 py-2 text-lg px-1">
+              Редактировать
+          </a>
+        </div>
+        <div class="flex border-b border-gray-300 py-2">
+          <span class="text-gray-500">Шифр / код объекта</span>
+          <span class="ml-auto text-gray-900">{{ object.objReg }}</span>
+        </div>
+        <div class="flex border-b border-gray-300 py-2">
+          <span class="text-gray-500">Альтернативный код</span>
+          <span class="ml-auto text-gray-900">{{ object.objNum }}</span>
+        </div>
+        <p class="mb-5 text-xl text-red-800">Адрес объекта</p>
+        <div class="flex border-b mb-6 border-gray-300 py-2">
+          <span class="text-gray-500">Страна</span>
+          <span class="ml-auto text-gray-900">{{ object.objCountry }}</span>
+        </div>
+        <div class="flex border-b mb-6 border-gray-300 py-2">
+          <span class="text-gray-500">Регион</span>
+          <span class="ml-auto text-gray-900">{{ object.objRegion }}</span>
+        </div>
+        <div class="flex border-b mb-6 border-gray-300 py-2">
+          <span class="text-gray-500">Город</span>
+          <span class="ml-auto text-gray-900">{{ object.objCity }}</span>
+        </div>
+        <div class="flex border-b mb-6 border-gray-300 py-2">
+          <span class="text-gray-500">Адрес</span>
+          <span class="ml-auto text-gray-900">{{ object.objAddress }}</span>
+        </div>
+        <p class="mb-5 text-xl text-red-800">Координаты</p>
+        <hr>
+        <div class="flex  border-b mb-6 border-gray-300 py-2">
+          <span class="text-gray-500">Широта</span>
+          <span class="ml-auto text-gray-900">{{ object.objGeoLat }}</span>
+        </div>
+        <div class="flex  border-b mb-6 border-gray-300 py-2">
+          <span class="text-gray-500">Долгота</span>
+          <span class="ml-auto text-gray-900">{{ object.objGeoLng }}</span>
+        </div>
+        <p class="mb-5 text-xl text-red-800">Характеристики Объекта</p>
+        <div class="flex  border-b mb-6 border-gray-300 py-2">
+          <span class="text-gray-500">Тип Объекта</span>
+          <span class="ml-auto text-gray-900">{{ object.objAmsType }}</span>
+        </div>
+        <div class="flex  border-b mb-6 border-gray-300 py-2">
+          <span class="text-gray-500">Тип секции</span>
+          <span class="ml-auto text-gray-900">{{ object.objAmsSection }}</span>
+        </div>
+        <div class="flex  border-b mb-6 border-gray-300 py-2">
+          <span class="text-gray-500">Длина секции</span>
+          <span class="ml-auto text-gray-900">{{ object.sectionLength }}</span>
+        </div>
+        <div class="flex  border-b mb-6 border-gray-300 py-2">
+          <span class="text-gray-500">Тип фермы</span>
+          <span class="ml-auto text-gray-900">{{ object.objFermType }}</span>
+        </div>
+        <div class="flex  border-b mb-6 border-gray-300 py-2">
+          <span class="text-gray-500">Высота АМС</span>
+          <span class="ml-auto text-gray-900">{{ object.amsHeight }}</span>
+        </div>
+        <div class="flex  border-b mb-6 border-gray-300 py-2">
+          <span class="text-gray-500">Сигнальные огни</span>
+          <span class="ml-auto text-gray-900">{{ object.signalSigns }}</span>
+        </div>
+        <div class="flex  border-b mb-6 border-gray-300 py-2">
+          <span class="text-gray-500">Отклонение</span>
+          <span class="ml-auto text-gray-900">{{ object.amsDeviation }}</span>
+        </div>
+        <div class="flex  border-b mb-6 border-gray-300 py-2">
+          <span class="text-gray-500">Высота крепления</span>
+          <span class="ml-auto text-gray-900">{{ object.amsFastenHeight }}</span>
+        </div>
+        <div class="flex  border-b mb-6 border-gray-300 py-2">
+          <span class="text-gray-500">Диаметр каната</span>
+          <span class="ml-auto text-gray-900">{{ object.amsRopeDia }}</span>
+        </div>
+        <div class="flex  border-b mb-6 border-gray-300 py-2">
+          <span class="text-gray-500">Количество канатов</span>
+          <span class="ml-auto text-gray-900">{{ object.amsRopesQty }}</span>
+        </div>
+        <div class="flex  border-b mb-6 border-gray-300 py-2">
+          <span class="text-gray-500">Натяжения</span>
+          <span class="ml-auto text-gray-900">{{ object.amsTension }}</span>
+        </div>
+        <div class="flex  border-b mb-6 border-gray-300 py-2">
+          <span class="text-gray-500">Гидроизоляция</span>
+          <span class="ml-auto text-gray-900">{{ object.amsWaterproof }}</span>
+        </div>
+        <div class="flex  border-b mb-6 border-gray-300 py-2">
+          <span class="text-gray-500">Изготовитель Объекта</span>
+          <span class="ml-auto text-gray-900">{{ object.amsProducer }}</span>
+        </div>
+        <div class="flex  border-b mb-6 border-gray-300 py-2">
+          <span class="text-gray-500">Наличие операторов связи на Объекте</span>
+          <span class="ml-auto text-gray-900">{{ object.amsOperator }}</span>
+        </div>
+        <div class="flex  border-b mb-6 border-gray-300 py-2">
+          <span class="text-gray-500">Разработчик проектной документации</span>
+          <span class="ml-auto text-gray-900">{{ object.amsDocsDev }}</span>
+        </div>
+        <div class="flex  border-b mb-6 border-gray-300 py-2">
+          <span class="text-gray-500">Схема Объекта</span>
+          <span class="ml-auto text-gray-900">{{ object.amsImgPlan }}</span>
+        </div>
+        <div class="flex  border-b mb-6 border-gray-300 py-2">
+          <span class="text-gray-500">Схема расположения оборудования на Объекте</span>
+          <span class="ml-auto text-gray-900">{{ object.amsImgEquip }}</span>
+        </div>
+        <div class="flex  border-b mb-6 border-gray-300 py-2">
+          <span class="text-gray-500">Фотографии Объекта</span>
+          <span class="ml-auto text-gray-900">{{ object.amsImgPhotos }}</span>
+        </div>
+        <div class="flex  border-b mb-6 border-gray-300 py-2">
+          <span class="text-gray-500">Дата</span>
+          <span class="ml-auto text-gray-900">{{ object.objDate }}</span>
+        </div>
+    </div>
+  </div>
+</section>
+{% endblock content %}

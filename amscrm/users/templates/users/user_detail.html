@@ -1,0 +1,46 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<section class="text-gray-600 body-font overflow-hidden">
+  <div class="container px-5 py-24 mx-auto">
+    <div class="lg:w-4/5 mx-auto flex flex-wrap">
+      <div class="w-full lg:pr-10 lg:py-6 mb-6 lg:mb-0">
+        <h2 class="text-sm title-font text-gray-500 tracking-widest">Пользователь</h2>
+        <h1 class="text-gray-900 text-3xl title-font font-medium mb-4">{{ user.userName }} {{ user.userSurname }}</h1>
+        <div class="flex mb-4">
+          <a href="#" class="flex-grow text-indigo-500 border-b-2 border-indigo-500 py-2 text-lg px-1">
+              Просмотр
+          </a>
+          <a href="{% url 'users:user-update' user.pk %}" class="flex-grow text-indigo-500 border-b-2 border-indigo-500 py-2 text-lg px-1">
+              Редактировать
+          </a>
+          <a href="{% url 'users:user-delete' user.pk %}" class="flex-grow text-indigo-500 border-b-2 border-indigo-500 py-2 text-lg px-1">
+              Удалить
+          </a>
+        </div>
+        <div class="flex border-b border-gray-300 py-2">
+          <span class="text-gray-500">Бригада</span>
+          {% if team %}
+          <span class="ml-auto text-gray-900">{{ team }}</span>
+          {% endif %}
+        </div>
+        <div class="flex border-b border-gray-300 py-2">
+          <span class="text-gray-500">Права пользователя</span>
+          <span class="ml-auto text-gray-900">{{ user.userRole }}</span>
+        </div>
+        <div class="flex border-b border-gray-300 py-2">
+          <span class="text-gray-500">Электронная почта</span>
+          <span class="ml-auto text-gray-900">{{ user.userEmail }}</span>
+        </div>
+        <div class="flex border-b mb-6 border-gray-300 py-2">
+          <span class="text-gray-500">Телефонный номер</span>
+          <span class="ml-auto text-gray-900">{{ user.userTel }}</span>
+        </div>
+        <div class="flex border-b mb-6 border-gray-300 py-2">
+          <span class="text-gray-500">Статус</span>
+          <span class="ml-auto text-gray-900">{{ user.is_active }}</span>
+        </div>
+    </div>
+  </div>
+</section>
+{% endblock content %}

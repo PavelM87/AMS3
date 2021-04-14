@@ -1,0 +1,22 @@
+{% extends 'base.html' %}
+{% load crispy_forms_tags %}
+{% block content %}
+<div class="max-w-lg mx-auto">
+    <a class="hover:text-blue-500" href="{% url 'users:user-list'%}">
+        К списку пользователей
+    </a>
+    <div class="py-5 border-t border-gray-200">
+        <h1 class="text-4xl text-gray-800">Редактирование пользователя</h1>
+    </div>
+    <form method="post" class="mt-5 bg-blue-200">
+        {% csrf_token %}
+        {{ form|crispy }}
+        <a href="{% url 'users:change-password' user.pk %}">
+            <span>Сменить пароль</span>
+        </a>
+        <button type="submit" class="mt-5 w-full text-white bg-blue-500 hover:bg-blue-600 px-3 py-3 rounded-md">
+            Подтвердить
+        </button>
+    </form>
+</div>
+{% endblock content %}
