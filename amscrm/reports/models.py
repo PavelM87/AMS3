@@ -9,11 +9,11 @@ from objects.models import Object
 class Report(models.Model):
 	idReport = models.AutoField(primary_key=True, unique=True)
 	reportYear = models.CharField(max_length=45)
-	reportObject = models.ForeignKey(Object, on_delete=models.PROTECT)
-	reportTemplate = models.ForeignKey("Template", on_delete=models.PROTECT)
+	reportObject = models.ForeignKey(Object, null=True, on_delete=models.SET_NULL)
+	reportTemplate = models.ForeignKey("Template", null=True, on_delete=models.SET_NULL)
 	reportData = models.JSONField()
 	reportTeam = models.ForeignKey(Team, on_delete=models.PROTECT)
-	reportEquipment = models.ForeignKey("Equipment", on_delete=models.PROTECT)
+	reportEquipment = models.ForeignKey("Equipment", null=True, on_delete=models.SET_NULL)
 	reportWind = models.CharField(max_length=45)
 	reportWeather = models.CharField(max_length=45)
 	reportSoil = models.CharField(max_length=45)
@@ -70,16 +70,16 @@ class Equipment(models.Model):
 		return self.equipName
 
 	class Meta:
-		verbose_name = "Оборудование"
-		verbose_name_plural = "Оборудования"
+		verbose_name = "Инструмент"
+		verbose_name_plural = "Инструменты"
 		db_table = 'reports_equipment'
 
 
 class Operator(models.Model):
 	idOperator = models.AutoField(primary_key=True)
 	operatorName = models.CharField(max_length=45)
-	operatorReport = models.ForeignKey("Report", on_delete=models.PROTECT)
-	operatorContract = models.ForeignKey("Contract", on_delete=models.PROTECT)
+	operatorReport = models.ForeignKey("Report", null=True, on_delete=models.SET_NULL)
+	operatorContract = models.ForeignKey("Contract",null=True, on_delete=models.SET_NULL)
 
 	def __str__(self):
 		return self.operatorName

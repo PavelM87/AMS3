@@ -1,20 +1,22 @@
 # import tempfile
 import json
-# from weasyprint import HTML, CSS
 
 from django.core.exceptions import ObjectDoesNotExist
-from django.db import transaction, IntegrityError
+from django.forms import formset_factory
 # from django.template.loader import render_to_string
 from django.http import HttpResponse
 # from django.template.loader import get_template
-from django.shortcuts import render, reverse, get_object_or_404, redirect
+from django.shortcuts import get_object_or_404, redirect, render, reverse
 from django.views import generic
-from django.forms import modelformset_factory, formset_factory
 
 # from amscrm import settings
-from .forms import ReportModelForm, AMSEquipmentForm
-from .models import Report, Equipment, Operator
+from .forms import AMSEquipmentForm, ReportModelForm
+from .models import Equipment, Operator, Report
+
+# from weasyprint import HTML, CSS
 # from users.mixins import SuperuserAndLoginRequiredMixin, ModeratorAndLoginRequiredMixin
+
+
 
 # def my_view(request):
 #     EquipmentFormset = formset_factory(AMSEquipmentForm)
@@ -48,14 +50,14 @@ class OperatorEncoder(json.JSONEncoder):
         return json.JSONEncoder.default(self, obj)
 
 
-def create(request):
+def report_create(request):
     context = {}
-    EquipmentFormset = formset_factory(AMSEquipmentForm, extra=1)
+    EquipmentFormset = formset_factory(AMSEquipmentForm)
     form = ReportModelForm(request.POST or None)
     formset = EquipmentFormset(request.POST or None, prefix='reports_report')
     if request.method == "POST":
-        print(f'formset {formset.is_valid()}||form{form.is_valid()}')
-        print(f'formset {formset.errors}||form{form.errors}')
+        # print(f"FORMSET: {formset.is_valid()} errors: {formset.errors}")
+        # print(f"FORM: {form.is_valid()} errors: {form.errors}")
         if form.is_valid() and formset.is_valid():
             data = form.save(commit=False)
             data.reportEquipAms = json.dumps(formset.cleaned_data, cls=OperatorEncoder)
@@ -63,7 +65,54 @@ def create(request):
             return redirect("reports:report-list")
     context['formset'] = formset
     context['form'] = form
-    return render(request, 'reports/amsequip.html', context)
+    return render(request, 'reports/report_create.html', context)
+
+
+def report_update(request, pk):
+    EquipmentFormset = formset_factory(AMSEquipmentForm, max_num=1) # max_num=1 запрещает пустые поля при редактировании
+    report = Report.objects.get(idReport=pk)
+    # equipment = Equipment.objects.filter(idEquipment=report.reportEquipment_id)
+    form = ReportModelForm(instance=report)
+    formset = EquipmentFormset(initial=json.loads(report.reportEquipAms), prefix='reports_report')
+    if request.method == 'POST':
+        form = ReportModelForm(request.POST or None)
+        formset = EquipmentFormset(request.POST or None, prefix='reports_report')
+        print(f"FORMSET: {formset.is_valid()} errors: {formset.errors}")
+        print(f"FORM: {form.is_valid()} errors: {form.errors}")
+        if form.is_valid() and formset.is_valid():
+            report.reportYear = form.cleaned_data['reportYear']
+            report.reportObject_id = form.cleaned_data['reportObject']
+            report.reportTemplate_id = form.cleaned_data['reportTemplate']
+            report.reportTeam_id = form.cleaned_data['reportTeam']
+            report.reportEquipment_id = form.cleaned_data['reportEquipment']
+            report.reportWind = form.cleaned_data['reportWind']
+            report.reportWeather = form.cleaned_data['reportWeather']
+            report.reportSoil = form.cleaned_data['reportSoil']
+            report.reportTemp = form.cleaned_data['reportTemp']
+            report.reportWeather3 = form.cleaned_data['reportWeather3']
+            report.reportElVoltage = form.cleaned_data['reportElVoltage']
+            report.reportElCableL = form.cleaned_data['reportElCableL']
+            report.reportElCableR = form.cleaned_data['reportElCableR']
+            report.reportElRope = form.cleaned_data['reportElRope']
+            report.reportElBus = form.cleaned_data['reportElBus']
+            report.reportMeasuresDate = form.cleaned_data['reportMeasuresDate']
+            report.reportData = form.cleaned_data['reportData']
+            # print()
+            # print(formset.cleaned_data)
+            # print()
+            # print(report.__dict__)
+            # print()
+            # print(form.cleaned_data)
+            # # print(report.reportEquipAms)
+            report.reportEquipAms = json.dumps(formset.cleaned_data, cls=OperatorEncoder, ensure_ascii=False)
+            report.save()
+            return redirect('reports:report-list')
+    context = {
+        'report': report,
+        'form': form,
+        'formset': formset
+    }
+    return render(request, "reports/report_update.html", context)
 
 
 # def ams_equip(request):
@@ -133,6 +182,8 @@ class ReportDetailView(generic.DetailView):
             context['equipment'] = Equipment.objects.filter(idEquipment=kwargs['object'].reportEquipment_id)
         except ObjectDoesNotExist:
             context['equipment'] = 'Отсутствует'
+        context['ams_equip'] = json.loads(context['object'].reportEquipAms)
+        print(context)
         return context
 
 
@@ -142,26 +193,6 @@ class ReportCreateView(generic.CreateView):
 
     def get_success_url(self):
         return reverse("reports:report-list")
-
-
-# def report_update(request, pk):
-
-#     report = Report.objects.get(id=pk)
-#     form = ReportModelForm(instance=report)
-#     equipment = AMSEquipment.objects.filter(ams_id=report.ams_id)
-#     # formset = AMSEquipmentForm(instance=equipment)
-#     if request.method == 'POST':
-#         form = ReportModelForm(request.POST, instance=report)
-#         if form.is_valid():
-#             form.save()
-#             return redirect('/reports')
-#     context = {
-#         'report': report,
-#         'form': form
-#     }
-#     return render(request, "reports/report_update.html", context)
-
-
 
 
 class ReportUpdateView(generic.UpdateView):
