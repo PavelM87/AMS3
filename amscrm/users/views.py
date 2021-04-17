@@ -60,8 +60,6 @@ class UserDetailView(generic.DetailView):
             context['team'] = Team.objects.get(member=kwargs['object'].idUser)
         except exceptions.ObjectDoesNotExist:
             context['team'] = 'Не состоит'
-        print(context)
-        print(context['team'])
         return context
 
 
@@ -87,14 +85,10 @@ class TeamCreateView(generic.CreateView):
 
     def get(self, request, *args, **kwargs):
         self.object = None
-        print('get')
         return super().get(request, *args, **kwargs)
 
     def post(self, request, *args, **kwargs):
         self.object = None
-        print(f'post request: {request}')
-        print(f'post args: {args}')
-        print(f'post kwargs: {kwargs}')
         return super().post(request, *args, **kwargs)
 
 

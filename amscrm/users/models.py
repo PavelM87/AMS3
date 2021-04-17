@@ -11,7 +11,7 @@ class CustomUser(AbstractBaseUser, PermissionsMixin):
     userSurname = models.CharField(max_length=45)
     userTel = models.CharField(max_length=15)
     userEmail = models.EmailField(max_length=45, unique=True)
-    userRole = models.ForeignKey('Role', on_delete=models.SET_DEFAULT, default=3)
+    userRole = models.ForeignKey('Role', on_delete=models.SET_NULL, null=True, default=3)
     is_active = models.BooleanField(default=True)
     is_staff = models.BooleanField(default=False)
     is_superuser = models.BooleanField(default=False)

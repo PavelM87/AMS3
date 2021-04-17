@@ -52,13 +52,14 @@ class OperatorEncoder(json.JSONEncoder):
 
 def report_create(request):
     context = {}
-    EquipmentFormset = formset_factory(AMSEquipmentForm)
+    EquipmentFormset = formset_factory(AMSEquipmentForm, extra=1)
     form = ReportModelForm(request.POST or None)
     formset = EquipmentFormset(request.POST or None, prefix='reports_report')
     if request.method == "POST":
-        # print(f"FORMSET: {formset.is_valid()} errors: {formset.errors}")
-        # print(f"FORM: {form.is_valid()} errors: {form.errors}")
+        print(f"FORMSET: {formset.is_valid()} errors: {formset.errors}")
+        print(f"FORM: {form.is_valid()} errors: {form.errors}")
         if form.is_valid() and formset.is_valid():
+            print(formset.data)
             data = form.save(commit=False)
             data.reportEquipAms = json.dumps(formset.cleaned_data, cls=OperatorEncoder)
             data.save()
@@ -73,6 +74,9 @@ def report_update(request, pk):
     report = Report.objects.get(idReport=pk)
     # equipment = Equipment.objects.filter(idEquipment=report.reportEquipment_id)
     form = ReportModelForm(instance=report)
+    print(f"row: {report.reportEquipAms}")
+    print('='*100)
+    print(f"json: {json.loads(report.reportEquipAms)}")
     formset = EquipmentFormset(initial=json.loads(report.reportEquipAms), prefix='reports_report')
     if request.method == 'POST':
         form = ReportModelForm(request.POST or None)
@@ -97,13 +101,13 @@ def report_update(request, pk):
             report.reportElBus = form.cleaned_data['reportElBus']
             report.reportMeasuresDate = form.cleaned_data['reportMeasuresDate']
             report.reportData = form.cleaned_data['reportData']
-            # print()
-            # print(formset.cleaned_data)
-            # print()
-            # print(report.__dict__)
-            # print()
-            # print(form.cleaned_data)
-            # # print(report.reportEquipAms)
+            print()
+            print(formset.data)
+            print()
+            print(report.__dict__)
+            print()
+            print(form.cleaned_data)
+            # print(report.reportEquipAms)
             report.reportEquipAms = json.dumps(formset.cleaned_data, cls=OperatorEncoder, ensure_ascii=False)
             report.save()
             return redirect('reports:report-list')
@@ -183,7 +187,6 @@ class ReportDetailView(generic.DetailView):
         except ObjectDoesNotExist:
             context['equipment'] = 'Отсутствует'
         context['ams_equip'] = json.loads(context['object'].reportEquipAms)
-        print(context)
         return context
 
 

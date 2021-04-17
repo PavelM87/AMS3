@@ -53,11 +53,11 @@
         <p class="mb-5 text-xl text-red-800">Характеристики Объекта</p>
         <div class="flex  border-b mb-6 border-gray-300 py-2">
           <span class="text-gray-500">Тип Объекта</span>
-          <span class="ml-auto text-gray-900">{{ object.objAmsType }}</span>
+          <span class="ml-auto text-gray-900">{{ object.get_objAmsType_display }}</span>
         </div>
         <div class="flex  border-b mb-6 border-gray-300 py-2">
           <span class="text-gray-500">Тип секции</span>
-          <span class="ml-auto text-gray-900">{{ object.objAmsSection }}</span>
+          <span class="ml-auto text-gray-900">{{ object.get_objAmsSection_display }}</span>
         </div>
         <div class="flex  border-b mb-6 border-gray-300 py-2">
           <span class="text-gray-500">Длина секции</span>
@@ -65,7 +65,7 @@
         </div>
         <div class="flex  border-b mb-6 border-gray-300 py-2">
           <span class="text-gray-500">Тип фермы</span>
-          <span class="ml-auto text-gray-900">{{ object.objFermType }}</span>
+          <span class="ml-auto text-gray-900">{{ object.get_objFermType_display }}</span>
         </div>
         <div class="flex  border-b mb-6 border-gray-300 py-2">
           <span class="text-gray-500">Высота АМС</span>

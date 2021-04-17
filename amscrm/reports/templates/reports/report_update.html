@@ -37,50 +37,49 @@
         <p class="mt-5">{{ form.reportMeasuresDate.label }} {{ form.reportMeasuresDate }}</p>
         <hr>
         <table class="mt-7 table form-table table-bordered table-sm">
-                            <thead class="text-center">
-                            <tr>
-                                <th>Тип</th>
-                                <th>Высота</th>
-                                <th>Размеры</th>
-                                <th>Количество</th>
-                                <th>Производитель</th>
-                                <th>Модель</th>
-                                <th>Оператор</th>
-                                <th>Примечание</th>
-                            </tr>
-                            </thead>
-                            <tbody>
-                            {% for equipment in formset %}
-                                <tr class="item">
-                                    <td>
-                                        {{ equipment.type }}
-                                    </td>
-                                    <td>
-                                        {{ equipment.height }}
-                                    </td>
-                                    <td>
-                                    	{{ equipment.proportions }}
-                                    </td>
-                                    <td>
-                                    	{{ equipment.amount }}
-                                    </td>
-                                    <td>
-                                    	{{ equipment.manufacturer }}
-                                    </td>
-                                    <td>
-                                    	{{ equipment.model }}
-                                    </td>
-                                    <td>
-                                    	{{ equipment.operator }}
-                                    </td>
-                                    <td>
-                                    	{{ equipment.note }}
-                                    </td>
-                                </tr>
-                            {% endfor %}
-                            </tbody>
-                        </table>
-                        
+            <thead class="text-center">
+                <tr>
+                    <th>Тип</th>
+                    <th>Высота</th>
+                    <th>Размеры</th>
+                    <th>Количество</th>
+                    <th>Производитель</th>
+                    <th>Модель</th>
+                    <th>Оператор</th>
+                    <th>Примечание</th>
+                </tr>
+            </thead>
+            <tbody>
+            {% for equipment in formset %}
+                <tr class="item">
+                    <td>
+                        {{ equipment.eq_type }}
+                    </td>
+                    <td>
+                        {{ equipment.height }}
+                    </td>
+                    <td>
+                        {{ equipment.proportions }}
+                    </td>
+                    <td>
+                        {{ equipment.amount }}
+                    </td>
+                    <td>
+                        {{ equipment.manufacturer }}
+                    </td>
+                    <td>
+                        {{ equipment.model }}
+                    </td>
+                    <td>
+                        {{ equipment.operator }}
+                    </td>
+                    <td>
+                        {{ equipment.note }}
+                    </td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>              
         <button type="submit" class="mt-5 w-full text-white bg-blue-500 hover:bg-blue-600 px-3 py-3 rounded-md">
             Подтвердить
         </button>
