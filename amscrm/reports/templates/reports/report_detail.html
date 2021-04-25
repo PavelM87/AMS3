@@ -1,5 +1,5 @@
 {% extends 'base.html' %}
-
+{% block title %}Отчет № {{ report.idReport }}{% endblock title %}
 {% block content %}
 <section class="text-gray-600 body-font overflow-hidden">
   <div class="container px-5 py-24 mx-auto">
@@ -169,7 +169,16 @@
           <p class="mb-5 mt-5 text-xl text-red-800">Схема АМС</p>
           <span class="text-gray-500">{{ report.reportPDataAms }}</span>
         </div>
+
     </div>
+    {% if form.errors or formset.errors %}
+    {% for formset_error in formset.errors %}
+      {{ formset_error }}
+    {% endfor %}
+    {% for form_error in form.errors %}
+      {{ form_error }}
+    {% endfor %}
+  {% endif %}
   </div>
 </section>
 {% endblock content %}

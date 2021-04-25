@@ -4,10 +4,15 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>CRM</title>
+    <title>CRM | {% block title %}{% endblock title %}</title>
     <link href="https://unpkg.com/tailwindcss@^2/dist/tailwind.min.css" rel="stylesheet">
+    <link rel="shortcut icon" href="{% static 'favicon.ico' %}" />
+    <!-- Dropzone js -->
+    <link rel="stylesheet" href="{% static 'dropzone.css' %}">
+    <script src="{% static 'dropzone.js' %}" defer></script>
     <script type="text/javascript" src="{% static 'bower_components/jquery/dist/jquery.js'%}"></script>
-
+    {% block scripts %}
+    {% endblock scripts %}
 </head>
 <body>
     <div class="max-w-7xl mx-auto">
@@ -15,6 +20,6 @@
         {% block content %}
         {% endblock content %}
     </div>
-{% block extra_script %}{% endblock %}
+{% block extra_script %}{% endblock extra_script %}
 </body>
 </html>

@@ -1,5 +1,5 @@
 {% extends 'base.html' %}
-
+{% block title %}Список отчетов{% endblock title %}
 {% block content %}
 <section class="text-gray-600 body-font">
   <div class="container px-5 py-24 mx-auto flex flex-wrap">
@@ -7,6 +7,11 @@
           <div>
               <a class="text-gray-500 hover:text-blue-500" href="{% url 'reports:report-create' %}">
                   Создать отчет
+              </a>
+          </div>
+          <div>
+              <a class="text-green-500 hover:text-green-900" href="{% url 'reports:json-from-file' %}">
+                  Загрузить отчет
               </a>
           </div>
       </div>

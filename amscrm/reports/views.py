@@ -4,43 +4,19 @@ import json
 from django.core.exceptions import ObjectDoesNotExist
 from django.forms import formset_factory
 # from django.template.loader import render_to_string
-from django.http import HttpResponse
+from django.http import HttpResponse, JsonResponse
 # from django.template.loader import get_template
 from django.shortcuts import get_object_or_404, redirect, render, reverse
 from django.views import generic
 
 # from amscrm import settings
 from .forms import AMSEquipmentForm, ReportModelForm
-from .models import Equipment, Operator, Report
+from .models import Equipment, Operator, Report, JSON, Template
+from users.models import Team
+from objects.models import Object
 
 # from weasyprint import HTML, CSS
 # from users.mixins import SuperuserAndLoginRequiredMixin, ModeratorAndLoginRequiredMixin
-
-
-
-# def my_view(request):
-#     EquipmentFormset = formset_factory(AMSEquipmentForm)
-#     formset = EquipmentFormset
-#     context = {}
-#     if request.method == 'POST':
-#         form = AMSEquipmentForm(request.POST)
-#         if form.is_valid():
-#             context['type'] = form.cleaned_data['type']
-#             context['height'] = form.cleaned_data['height']
-#             context['proportions'] = form.cleaned_data['proportions']
-#             context['amount'] = form.cleaned_data['amount']
-#             context['manufacturer'] = form.cleaned_data['manufacturer']
-#             context['model'] = form.cleaned_data['model']
-#             context['operator'] = form.cleaned_data['operator']
-#             context['note'] = form.cleaned_data['note']
-#             print(context)
-#             context = json.dumps(context)
-#             print(context)
-
-#             return redirect("reports:report-list")
-#     else:
-#         form = AMSEquipmentForm()
-#     return render(request, "reports/amsequip.html", {'form': form})
 
 
 class OperatorEncoder(json.JSONEncoder):
@@ -48,6 +24,102 @@ class OperatorEncoder(json.JSONEncoder):
         if isinstance(obj, Operator):
             return obj.operatorName
         return json.JSONEncoder.default(self, obj)
+        
+
+
+def json_upload_view(request):
+    print('файл был отправлен')
+
+    if request.method == 'POST':
+        json_file_name = request.FILES.get('file').name
+        json_file = request.FILES.get('file')
+        obj, created = JSON.objects.get_or_create(file_name=json_file_name)
+
+        if created:
+            obj.json_file = json_file
+            obj.save()
+            with open(obj.json_file.path, 'r') as f:
+                data = json.load(f)
+
+                # reportYear = data['reportYear']
+                # reportObject = data['reportObject']
+                # reportTemplate = data['reportTemplate']
+                # reportData = data['reportData']
+                # reportTeam = data['reportTeam']
+                # reportEquipment = data['reportEquipment']
+                # reportWind = data['reportWind']
+                # reportWeather = data['reportWeather']
+                # reportSoil = data['reportSoil']
+                # reportWeather3 = data['reportWeather3']
+                # reportElVoltage = data['reportElVoltage']
+                # reportElCableL = data['reportElCableL']
+                # reportElCableR = data['reportElCableR']
+                # reportElRope = data['reportElRope']
+                # reportElBus = data['reportElBus']
+                # reportEquipAms = data['reportEquipAms']
+                # reportPhotosRes = data['reportPhotosRes']
+                # reportPDataAms = data['reportPDataAms']
+                # reportDate = data['reportDate']
+
+                report_obj = Report.objects.create(
+                    reportYear=data['reportYear'],
+                    reportObject=Object.objects.get(objNum=data['reportObject'].split()[1]),
+                    reportTemplate=Template.objects.get(templateName=data['reportTemplate']),
+                    reportData=data['reportData'],
+                    reportTeam=Team.objects.get(id=data['reportTeam'].split()[-1]),
+                    reportEquipment=Equipment.objects.get(equipName=data['reportEquipment']),
+                    reportWind=data['reportWind'],
+                    reportWeather=data['reportWeather'],
+                    reportSoil=data['reportSoil'],
+                    reportWeather3=data['reportWeather3'],
+                    reportElVoltage=data['reportElVoltage'],
+                    reportElCableL=data['reportElCableL'],
+                    reportElCableR=data['reportElCableR'],
+                    reportElRope=data['reportElRope'],
+                    reportElBus=data['reportElBus'],
+                    reportEquipAms=json.dumps(data['reportEquipAms'], cls=OperatorEncoder),
+                    reportPhotosRes=data['reportPhotosRes'],
+                    reportPDataAms=data['reportPDataAms'],
+                    reportDate=data['reportDate']
+                )
+
+                report_obj.save()
+
+                # try:
+                #     report_obj = Report.objects.get(name__iexact=product)
+                # except Product.DoesNotExist:
+                #     report_obj = None
+
+                # for row in reader:
+                #     data = "".join(row)
+                #     data = data.split(';')
+                #     # data.pop()
+                #     transaction_id = data[0].strip()
+                #     product = data[1].strip()
+                #     quantity = int(data[2])
+                #     customer = data[3].strip()
+                #     date = parse_date(data[4].strip())
+                #     print(date)
+
+                #     try:
+                #         product_obj = Product.objects.get(name__iexact=product)
+                #     except Product.DoesNotExist:
+                #         product_obj = None
+
+                #     if product_obj is not None:
+                #         customer_obj, _ = Customer.objects.get_or_create(name=customer)
+                #         salesman_obj = Profile.objects.get(user=request.user)
+                #         position_obj = Position.objects.create(product=product_obj, quantity=quantity, created=date)
+
+                #         sale_obj, _ = Sale.objects.get_or_create(transaction_id=transaction_id, customer=customer_obj, salesman=salesman_obj, created=date)
+                #         sale_obj.positions.add(position_obj)
+                #         sale_obj.save()
+                        
+                return JsonResponse({'ex': False})
+        else:
+            return JsonResponse({'ex': True})
+
+    return HttpResponse()
 
 
 def report_create(request):
@@ -59,11 +131,11 @@ def report_create(request):
         print(f"FORMSET: {formset.is_valid()} errors: {formset.errors}")
         print(f"FORM: {form.is_valid()} errors: {form.errors}")
         if form.is_valid() and formset.is_valid():
-            print(formset.data)
             data = form.save(commit=False)
             data.reportEquipAms = json.dumps(formset.cleaned_data, cls=OperatorEncoder)
             data.save()
             return redirect("reports:report-list")
+        
     context['formset'] = formset
     context['form'] = form
     return render(request, 'reports/report_create.html', context)
@@ -72,11 +144,7 @@ def report_create(request):
 def report_update(request, pk):
     EquipmentFormset = formset_factory(AMSEquipmentForm, max_num=1) # max_num=1 запрещает пустые поля при редактировании
     report = Report.objects.get(idReport=pk)
-    # equipment = Equipment.objects.filter(idEquipment=report.reportEquipment_id)
     form = ReportModelForm(instance=report)
-    print(f"row: {report.reportEquipAms}")
-    print('='*100)
-    print(f"json: {json.loads(report.reportEquipAms)}")
     formset = EquipmentFormset(initial=json.loads(report.reportEquipAms), prefix='reports_report')
     if request.method == 'POST':
         form = ReportModelForm(request.POST or None)
@@ -101,13 +169,6 @@ def report_update(request, pk):
             report.reportElBus = form.cleaned_data['reportElBus']
             report.reportMeasuresDate = form.cleaned_data['reportMeasuresDate']
             report.reportData = form.cleaned_data['reportData']
-            print()
-            print(formset.data)
-            print()
-            print(report.__dict__)
-            print()
-            print(form.cleaned_data)
-            # print(report.reportEquipAms)
             report.reportEquipAms = json.dumps(formset.cleaned_data, cls=OperatorEncoder, ensure_ascii=False)
             report.save()
             return redirect('reports:report-list')
@@ -117,32 +178,6 @@ def report_update(request, pk):
         'formset': formset
     }
     return render(request, "reports/report_update.html", context)
-
-
-# def ams_equip(request):
-#     report = Report.objects.all()
-#     context = {}
-#     if request.method == 'POST':
-#         form = AMSEquipmentForm(request.POST)
-#         if form.is_valid():
-#             context['type'] = form.cleaned_data['type']
-#             context['height'] = form.cleaned_data['height']
-#             context['proportions'] = form.cleaned_data['proportions']
-#             context['amount'] = form.cleaned_data['amount']
-#             context['manufacturer'] = form.cleaned_data['manufacturer']
-#             context['model'] = form.cleaned_data['model']
-#             context['operator'] = form.cleaned_data['operator']
-#             context['note'] = form.cleaned_data['note']
-#             print(context)
-#             context = json.dumps(context)
-#             print(context)
-
-#             return redirect("reports:report-list")
-#     else:
-#         form = AMSEquipmentForm()
-#     return render(request, "reports/amsequip.html", {'form': form})
-
-
 
 
 def generate_pdf(request, *args, **kwargs):
@@ -167,6 +202,9 @@ def generate_pdf(request, *args, **kwargs):
         output = open(output.name, 'rb')
         response.write(output.read())
     return response
+
+class UploadTemplateView(generic.TemplateView):
+    template_name = 'reports/json_from_file.html'
 
 
 class ReportListView(generic.ListView):

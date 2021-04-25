@@ -1,6 +1,7 @@
 {% extends 'base.html' %}
 {% load crispy_forms_tags %}
 {% load static %}
+{% block title %}Создание отчета{% endblock title %}
 {% block content %}
 <div class="">
     <a class="hover:text-blue-500" href="{% url 'reports:report-list' %}">
@@ -92,6 +93,7 @@
             </tbody>
         </table>
         {{ formset.management_form }}
+
         <button type="submit" class="mt-5 w-full text-white bg-blue-500 hover:bg-blue-600 px-3 py-3 rounded-md">
             Создать
         </button>
