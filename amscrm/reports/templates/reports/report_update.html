@@ -1,5 +1,8 @@
 {% extends 'base.html' %}
 {% load crispy_forms_tags %}
+{% load static %}
+{% block title %}Правка Отчета № {{ report.idReport }}{% endblock title %}
+
 {% block content %}
 <div class="max-w-lg mx-auto">
     <a class="hover:text-blue-500" href="{% url 'reports:report-list' %}">
@@ -76,8 +79,22 @@
                     <td>
                         {{ equipment.note }}
                     </td>
+                    <td>
+                        <button type="button" class="btn btn-danger btn-sm remove-form-row" id="{{ formset.prefix }}">
+
+                            Delete
+                        </button>
+                    </td>
                 </tr>
             {% endfor %}
+            <tr>
+                <td colspan="9"
+                style="border-left: none!important; border-right: none !important; border-bottom: none!important;">
+                <button type="button" class="btn btn-sm btn-success add-form-row" id="{{ formset.prefix }}">
+                   Add
+                </button>
+                </td>
+            </tr>
             </tbody>
         </table>              
         <button type="submit" class="mt-5 w-full text-white bg-blue-500 hover:bg-blue-600 px-3 py-3 rounded-md">
@@ -86,3 +103,6 @@
     </form>
 </div>
 {% endblock content %}
+{% block extra_script %}
+	<script type="text/javascript" src="{% static 'js/formset.js' %}"></script>
+{% endblock extra_script %}

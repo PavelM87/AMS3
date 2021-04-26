@@ -1,7 +1,7 @@
 {% load static %}
 
 <!DOCTYPE html>
-<html lang="en">
+<html lang="ru">
 <head>
     <meta charset="UTF-8">
     <title>CRM | {% block title %}{% endblock title %}</title>
@@ -10,7 +10,9 @@
     <!-- Dropzone js -->
     <link rel="stylesheet" href="{% static 'dropzone.css' %}">
     <script src="{% static 'dropzone.js' %}" defer></script>
+    <!-- Dinamic add form -->
     <script type="text/javascript" src="{% static 'bower_components/jquery/dist/jquery.js'%}"></script>
+
     {% block scripts %}
     {% endblock scripts %}
 </head>

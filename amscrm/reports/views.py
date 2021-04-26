@@ -28,9 +28,8 @@ class OperatorEncoder(json.JSONEncoder):
 
 
 def json_upload_view(request):
-    print('файл был отправлен')
-
     if request.method == 'POST':
+        
         json_file_name = request.FILES.get('file').name
         json_file = request.FILES.get('file')
         obj, created = JSON.objects.get_or_create(file_name=json_file_name)
@@ -40,27 +39,6 @@ def json_upload_view(request):
             obj.save()
             with open(obj.json_file.path, 'r') as f:
                 data = json.load(f)
-
-                # reportYear = data['reportYear']
-                # reportObject = data['reportObject']
-                # reportTemplate = data['reportTemplate']
-                # reportData = data['reportData']
-                # reportTeam = data['reportTeam']
-                # reportEquipment = data['reportEquipment']
-                # reportWind = data['reportWind']
-                # reportWeather = data['reportWeather']
-                # reportSoil = data['reportSoil']
-                # reportWeather3 = data['reportWeather3']
-                # reportElVoltage = data['reportElVoltage']
-                # reportElCableL = data['reportElCableL']
-                # reportElCableR = data['reportElCableR']
-                # reportElRope = data['reportElRope']
-                # reportElBus = data['reportElBus']
-                # reportEquipAms = data['reportEquipAms']
-                # reportPhotosRes = data['reportPhotosRes']
-                # reportPDataAms = data['reportPDataAms']
-                # reportDate = data['reportDate']
-
                 report_obj = Report.objects.create(
                     reportYear=data['reportYear'],
                     reportObject=Object.objects.get(objNum=data['reportObject'].split()[1]),
@@ -82,39 +60,7 @@ def json_upload_view(request):
                     reportPDataAms=data['reportPDataAms'],
                     reportDate=data['reportDate']
                 )
-
                 report_obj.save()
-
-                # try:
-                #     report_obj = Report.objects.get(name__iexact=product)
-                # except Product.DoesNotExist:
-                #     report_obj = None
-
-                # for row in reader:
-                #     data = "".join(row)
-                #     data = data.split(';')
-                #     # data.pop()
-                #     transaction_id = data[0].strip()
-                #     product = data[1].strip()
-                #     quantity = int(data[2])
-                #     customer = data[3].strip()
-                #     date = parse_date(data[4].strip())
-                #     print(date)
-
-                #     try:
-                #         product_obj = Product.objects.get(name__iexact=product)
-                #     except Product.DoesNotExist:
-                #         product_obj = None
-
-                #     if product_obj is not None:
-                #         customer_obj, _ = Customer.objects.get_or_create(name=customer)
-                #         salesman_obj = Profile.objects.get(user=request.user)
-                #         position_obj = Position.objects.create(product=product_obj, quantity=quantity, created=date)
-
-                #         sale_obj, _ = Sale.objects.get_or_create(transaction_id=transaction_id, customer=customer_obj, salesman=salesman_obj, created=date)
-                #         sale_obj.positions.add(position_obj)
-                #         sale_obj.save()
-                        
                 return JsonResponse({'ex': False})
         else:
             return JsonResponse({'ex': True})
@@ -145,7 +91,9 @@ def report_update(request, pk):
     EquipmentFormset = formset_factory(AMSEquipmentForm, max_num=1) # max_num=1 запрещает пустые поля при редактировании
     report = Report.objects.get(idReport=pk)
     form = ReportModelForm(instance=report)
+    initial = json.loads(report.reportEquipAms)
     formset = EquipmentFormset(initial=json.loads(report.reportEquipAms), prefix='reports_report')
+    print(initial)
     if request.method == 'POST':
         form = ReportModelForm(request.POST or None)
         formset = EquipmentFormset(request.POST or None, prefix='reports_report')
