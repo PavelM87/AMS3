@@ -6,8 +6,8 @@ app_name = 'reports'
 
 urlpatterns = [
     path('', views.ReportListView.as_view(), name='report-list'),
-    # path('pdf/<int:pk>/', generate_pdf, name='pdf'),
     path('<int:pk>/', views.ReportDetailView.as_view(), name='report-detail'),
+    path('pdf/<int:pk>/', views.generate_pdf, name='pdf'),
     path('create/', views.report_create, name='report-create'),
     path('upload-json/', views.json_upload_view, name='upload-json'),
     path('json-from-file/', views.UploadTemplateView.as_view(), name='json-from-file'),

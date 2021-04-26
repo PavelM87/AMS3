@@ -1,28 +1,28 @@
-# import tempfile
+import tempfile
 import json
 
 from django.core.exceptions import ObjectDoesNotExist
 from django.forms import formset_factory
-# from django.template.loader import render_to_string
+from django.template.loader import render_to_string
 from django.http import HttpResponse, JsonResponse
-# from django.template.loader import get_template
+from django.template.loader import get_template
 from django.shortcuts import get_object_or_404, redirect, render, reverse
 from django.views import generic
 
-# from amscrm import settings
+from amscrm import settings
 from .forms import AMSEquipmentForm, ReportModelForm
 from .models import Equipment, Operator, Report, JSON, Template
 from users.models import Team
 from objects.models import Object
 
-# from weasyprint import HTML, CSS
+from weasyprint import HTML, CSS
 # from users.mixins import SuperuserAndLoginRequiredMixin, ModeratorAndLoginRequiredMixin
 
 
 class OperatorEncoder(json.JSONEncoder):
     def default(self, obj):
         if isinstance(obj, Operator):
-            return obj.operatorName
+            return obj.idOperator
         return json.JSONEncoder.default(self, obj)
         
 
@@ -91,9 +91,8 @@ def report_update(request, pk):
     EquipmentFormset = formset_factory(AMSEquipmentForm, max_num=1) # max_num=1 запрещает пустые поля при редактировании
     report = Report.objects.get(idReport=pk)
     form = ReportModelForm(instance=report)
-    initial = json.loads(report.reportEquipAms)
     formset = EquipmentFormset(initial=json.loads(report.reportEquipAms), prefix='reports_report')
-    print(initial)
+    print(json.loads(report.reportEquipAms))
     if request.method == 'POST':
         form = ReportModelForm(request.POST or None)
         formset = EquipmentFormset(request.POST or None, prefix='reports_report')
@@ -133,14 +132,16 @@ def generate_pdf(request, *args, **kwargs):
     # Данные модели
     pk = kwargs.get('pk')
     report = get_object_or_404(Report, pk=pk)
+    equipment = Equipment.objects.filter(idEquipment=report.reportEquipment_id)
+    ams_equip = json.loads(report.reportEquipAms)
 
     # Обработка шаблона
-    html_string = render_to_string('reports/pdf.html', {'report': report})
+    html_string = render_to_string('reports/pdf.html', {'report': report, 'equipment': equipment, 'ams_equip': ams_equip})
     html = HTML(string=html_string, base_url=request.build_absolute_uri())
     result = html.write_pdf()
 
     # Создание http ответа
-    pdf = html.write_pdf(stylesheets=[CSS(settings.STATIC_ROOT + '/css/pdf_report.css')])
+    pdf = html.write_pdf()
     response = HttpResponse(pdf, content_type='application/pdf;')
     response['Content-Disposition'] = 'inline; filename=report.pdf'
     response['Content-Transfer-Encoding'] = 'binary'
@@ -172,7 +173,12 @@ class ReportDetailView(generic.DetailView):
             context['equipment'] = Equipment.objects.filter(idEquipment=kwargs['object'].reportEquipment_id)
         except ObjectDoesNotExist:
             context['equipment'] = 'Отсутствует'
-        context['ams_equip'] = json.loads(context['object'].reportEquipAms)
+        data = json.loads(context['object'].reportEquipAms)
+        for form in data:
+            form['operator'] = Operator.objects.get(idOperator=form['operator'])
+        context['ams_equip'] = data
+        context['operator'] = Operator.objects.all()
+        print(context)
         return context
 
 

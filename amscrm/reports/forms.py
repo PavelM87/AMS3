@@ -24,7 +24,7 @@ class AMSEquipmentForm(forms.Form):
     amount.widget.attrs.update({'class': 'formset-field'})
     manufacturer.widget.attrs.update({'class': 'formset-field'})
     model.widget.attrs.update({'class': 'formset-field'})
-    operator.widget.attrs.update({'class': 'formset-field', 'selected': True})
+    operator.widget.attrs.update({'class': 'formset-field'})
     note.widget.attrs.update({'class': 'formset-field'})
 
 
