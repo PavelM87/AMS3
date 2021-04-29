@@ -10,6 +10,7 @@ from django.core import exceptions
 
 from .models import CustomUser, Team
 from .forms import UserModelForm, CustomUserCreationForm, CustomUserChangeForm, TeamModelForm
+from .mixins import SuperuserAndLoginRequiredMixin
 
 
 class LandingPageView(generic.View):
@@ -22,7 +23,7 @@ class LandingPageView(generic.View):
         return render(request, 'landing.html', context)	
 
 
-class UserPasswordChangeView(views.PasswordChangeView):
+class UserPasswordChangeView(SuperuserAndLoginRequiredMixin, views.PasswordChangeView):
     success_url = reverse_lazy('password_change_done')
     pk = []
 
@@ -39,17 +40,17 @@ class UserPasswordChangeView(views.PasswordChangeView):
         return kwargs
 
 
-class UserPasswordChangeDoneView(views.PasswordChangeDoneView):
+class UserPasswordChangeDoneView(SuperuserAndLoginRequiredMixin, views.PasswordChangeDoneView):
     template_name = 'registration/password_change_done.html'
 
 
-class UserListView(generic.ListView):
+class UserListView(SuperuserAndLoginRequiredMixin, generic.ListView):
     template_name = "users/user_list.html"
     queryset = CustomUser.objects.all()
     context_object_name = "users"	
 
 
-class UserDetailView(generic.DetailView):
+class UserDetailView(SuperuserAndLoginRequiredMixin, generic.DetailView):
     template_name = "users/user_detail.html"
     queryset = CustomUser.objects.all()
     context_object_name = "user"
@@ -63,36 +64,15 @@ class UserDetailView(generic.DetailView):
         return context
 
 
-class UserCreateView(generic.CreateView):
+class UserCreateView(SuperuserAndLoginRequiredMixin, generic.CreateView):
     template_name = "users/user_create.html"
     form_class = CustomUserCreationForm
 
     def get_success_url(self):
         return reverse("users:user-list")
 
-class TeamListView(generic.ListView):
-    template_name = "users/team_list.html"
-    queryset = Team.objects.all()
-    context_object_name = "teams" 
 
-
-class TeamCreateView(generic.CreateView):
-    template_name = "users/team_create.html"
-    form_class = TeamModelForm
-
-    def get_success_url(self):
-        return reverse("users:user-list")
-
-    def get(self, request, *args, **kwargs):
-        self.object = None
-        return super().get(request, *args, **kwargs)
-
-    def post(self, request, *args, **kwargs):
-        self.object = None
-        return super().post(request, *args, **kwargs)
-
-
-class UserUpdateView(generic.UpdateView):
+class UserUpdateView(SuperuserAndLoginRequiredMixin, generic.UpdateView):
     template_name = "users/user_update.html"
     queryset = CustomUser.objects.all()
     form_class = UserModelForm
@@ -108,3 +88,25 @@ class UserDeleteView(generic.DeleteView):
 
     def get_success_url(self):
         return reverse("users:user-list")
+
+
+class TeamListView(SuperuserAndLoginRequiredMixin, generic.ListView):
+    template_name = "users/team_list.html"
+    queryset = Team.objects.all()
+    context_object_name = "teams" 
+
+
+class TeamCreateView(SuperuserAndLoginRequiredMixin, generic.CreateView):
+    template_name = "users/team_create.html"
+    form_class = TeamModelForm
+
+    def get_success_url(self):
+        return reverse("users:user-list")
+
+    def get(self, request, *args, **kwargs):
+        self.object = None
+        return super().get(request, *args, **kwargs)
+
+    def post(self, request, *args, **kwargs):
+        self.object = None
+        return super().post(request, *args, **kwargs)

@@ -11,6 +11,9 @@
       <a href="{% url 'objects:object-list' %}" class="mr-5 hover:text-gray-900">Объекты</a>
       <a href="{% url 'users:user-list' %}" class="mr-5 hover:text-gray-900">Пользователи</a>
       <a href="{% url 'users:team-list' %}" class="mr-5 hover:text-gray-900">Бригады</a>
+      <a href="{% url 'orders:order-list' %}" class="mr-5 hover:text-gray-900">Наряды</a>
+      {% elif request.user.userRole_id == 5 %}
+      <a href="{% url 'objects:object-list' %}" class="mr-5 hover:text-gray-900">Объекты</a>
       {% endif %}
       {% if request.user.is_authenticated %}
       <a href="{% url 'reports:report-list' %}" class="mr-5 hover:text-gray-900">Отчеты</a>

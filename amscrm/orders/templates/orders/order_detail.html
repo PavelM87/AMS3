@@ -1,0 +1,52 @@
+{% extends 'base.html' %}
+{% block title %}Наряд № {{ order.idOrder }}{% endblock title %}
+
+{% block content %}
+<section class="text-gray-600 body-font overflow-hidden">
+  <div class="container px-5 py-24 mx-auto">
+    <div class="lg:w-4/5 mx-auto flex flex-wrap">
+      <div class="w-full lg:pr-10 lg:py-6 mb-6 lg:mb-0">
+        <a class="hover:text-blue-500" href="{% url 'orders:order-list' %}">
+        Назад
+        </a>
+        <div class="flex mb-4">
+          <a href="{% url 'orders:order-detail' order.pk%}" class="flex-grow text-indigo-500 border-b-2 border-indigo-500 py-2 text-lg px-1">
+              Просмотр
+          </a>
+          <a href="{% url 'orders:order-update' order.pk %}" class="flex-grow text-indigo-500 border-b-2 border-indigo-500 py-2 text-lg px-1">
+              Редактировать
+          </a>
+        </div>
+        <div class="flex border-b border-gray-300 py-2">
+          <span class="text-gray-500">Дата</span>
+          <span class="ml-auto text-gray-900">{{ order.orderDate }}</span>
+        </div>
+        <div class="flex border-b border-gray-300 py-2">
+          <span class="text-gray-500">Адрес</span>
+          <span class="ml-auto text-gray-900">{{ order.orderCountry }}, {{ order.orderRegion }}, {{ order.orderCity }}, {{ order.orderAddress }}</span>
+        </div>
+        <div class="flex border-b mb-6 border-gray-300 py-2">
+          <span class="text-gray-500">Объект</span>
+          <span class="ml-auto text-gray-900">{{ order.orderObject }}</span>
+        </div>
+        <div class="flex border-b mb-6 border-gray-300 py-2">
+          <span class="text-gray-500">Список работ</span>
+          <span class="ml-auto text-gray-900">{{ order.orderWorks }}</span>
+        </div>
+        <div class="flex border-b mb-6 border-gray-300 py-2">
+          <span class="text-gray-500">Список кодов работ</span>
+          <span class="ml-auto text-gray-900">{{ order.orderCodes }}</span>
+        </div>
+        <div class="flex border-b mb-6 border-gray-300 py-2">
+          <span class="text-gray-500">Контактная информация</span>
+          <span class="ml-auto text-gray-900">{{ order.orderContacts }}</span>
+        </div>
+        <div class="flex border-b mb-6 border-gray-300 py-2">
+          <span class="text-gray-500">Работает бригада</span>
+          <span class="ml-auto text-gray-900">{{ order.orderTeam }}</span>
+        </div>
+
+    </div>
+  </div>
+</section>
+{% endblock content %}

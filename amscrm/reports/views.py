@@ -39,6 +39,9 @@ def json_upload_view(request):
             obj.save()
             with open(obj.json_file.path, 'r') as f:
                 data = json.load(f)
+                form = data['reportEquipAms']
+                for dct in form:
+                    dct['operator'] = Operator.objects.get(operatorName=dct['operator']).idOperator
                 report_obj = Report.objects.create(
                     reportYear=data['reportYear'],
                     reportObject=Object.objects.get(objNum=data['reportObject'].split()[1]),
@@ -47,6 +50,7 @@ def json_upload_view(request):
                     reportTeam=Team.objects.get(id=data['reportTeam'].split()[-1]),
                     reportEquipment=Equipment.objects.get(equipName=data['reportEquipment']),
                     reportWind=data['reportWind'],
+                    reportTemp=data['reportTemp'],
                     reportWeather=data['reportWeather'],
                     reportSoil=data['reportSoil'],
                     reportWeather3=data['reportWeather3'],
@@ -55,7 +59,7 @@ def json_upload_view(request):
                     reportElCableR=data['reportElCableR'],
                     reportElRope=data['reportElRope'],
                     reportElBus=data['reportElBus'],
-                    reportEquipAms=json.dumps(data['reportEquipAms'], cls=OperatorEncoder),
+                    reportEquipAms=json.dumps(form, cls=OperatorEncoder),
                     reportPhotosRes=data['reportPhotosRes'],
                     reportPDataAms=data['reportPDataAms'],
                     reportDate=data['reportDate']
@@ -92,7 +96,6 @@ def report_update(request, pk):
     report = Report.objects.get(idReport=pk)
     form = ReportModelForm(instance=report)
     formset = EquipmentFormset(initial=json.loads(report.reportEquipAms), prefix='reports_report')
-    print(json.loads(report.reportEquipAms))
     if request.method == 'POST':
         form = ReportModelForm(request.POST or None)
         formset = EquipmentFormset(request.POST or None, prefix='reports_report')
@@ -178,7 +181,6 @@ class ReportDetailView(generic.DetailView):
             form['operator'] = Operator.objects.get(idOperator=form['operator'])
         context['ams_equip'] = data
         context['operator'] = Operator.objects.all()
-        print(context)
         return context
 
 

@@ -3,21 +3,22 @@ from django.views import generic
 
 from .models import Object
 from .forms import ObjectModelForm
+from users.mixins import ModeratorAndLoginRequiredMixin
 
 
-class ObjectListView(generic.ListView):
+class ObjectListView(ModeratorAndLoginRequiredMixin, generic.ListView):
     template_name = "objects/object_list.html"
     queryset = Object.objects.all()
     context_object_name = "objects"
 
 
-class ObjectDetailView(generic.DetailView):
+class ObjectDetailView(ModeratorAndLoginRequiredMixin, generic.DetailView):
     template_name = "objects/object_detail.html"
     queryset = Object.objects.all()
     context_object_name = "object"
 
 
-class ObjectUpdateView(generic.UpdateView):
+class ObjectUpdateView(ModeratorAndLoginRequiredMixin, generic.UpdateView):
     template_name = "objects/object_update.html"
     queryset = Object.objects.all()
     form_class = ObjectModelForm
@@ -26,7 +27,7 @@ class ObjectUpdateView(generic.UpdateView):
         return reverse("objects:object-list")
 
 
-class ObjectCreateView(generic.CreateView):
+class ObjectCreateView(ModeratorAndLoginRequiredMixin, generic.CreateView):
     template_name = "objects/object_create.html"
     form_class = ObjectModelForm
 
@@ -34,7 +35,7 @@ class ObjectCreateView(generic.CreateView):
         return reverse("objects:object-list")
 
 
-class ObjectDeleteView(generic.DeleteView):
+class ObjectDeleteView(ModeratorAndLoginRequiredMixin, generic.DeleteView):
     template_name = "objects/object_delete.html"
     queryset = Object.objects.all()
 

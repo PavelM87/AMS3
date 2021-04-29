@@ -7,12 +7,12 @@ from .managers import CustomUserManager
 
 class CustomUser(AbstractBaseUser, PermissionsMixin):
     idUser = models.AutoField(primary_key=True)
-    userName = models.CharField(max_length=15)
-    userSurname = models.CharField(max_length=45)
-    userTel = models.CharField(max_length=15)
-    userEmail = models.EmailField(max_length=45, unique=True)
-    userRole = models.ForeignKey('Role', on_delete=models.SET_NULL, null=True, default=3)
-    is_active = models.BooleanField(default=True)
+    userName = models.CharField(max_length=15, verbose_name='Имя')
+    userSurname = models.CharField(max_length=45, verbose_name='Фамилия')
+    userTel = models.CharField(max_length=15, verbose_name='Телефон')
+    userEmail = models.EmailField(max_length=45, unique=True, verbose_name='Электронная почта')
+    userRole = models.ForeignKey('Role', on_delete=models.SET_NULL, null=True, default=3, verbose_name='Права пользователя')
+    is_active = models.BooleanField(default=True, verbose_name='Статус')
     is_staff = models.BooleanField(default=False)
     is_superuser = models.BooleanField(default=False)
 
