@@ -1,131 +1,135 @@
 {% extends 'base.html' %}
-{% block title %}Отчет № {{ report.idReport }}{% endblock title %}
+{% load i18n %}
+{% block title %}{% trans 'Отчет' %} № {{ report.idReport }}{% endblock title %}
+{% block scripts %}
+
+{% endblock scripts %}
 {% block content %}
 <section class="text-gray-600 body-font overflow-hidden">
   <div class="container px-5 py-24 mx-auto">
     <div class="lg:w-4/5 mx-auto flex flex-wrap">
       <div class="w-full lg:pr-10 lg:py-6 mb-6 lg:mb-0">
-        <h2 class="text-sm title-font text-gray-500 tracking-widest">Отчет</h2>
-        <h1 class="text-gray-900 text-3xl title-font font-medium mb-4">Отчет № {{ report.idReport }}</h1>
+        <h2 class="text-sm title-font text-gray-500 tracking-widest">{% trans 'Отчет' %}</h2>
+        <h1 class="text-gray-900 text-3xl title-font font-medium mb-4">{% trans 'Отчет' %} № {{ report.idReport }}</h1>
         <div class="flex mb-4">
           <a href="#" class="flex-grow text-indigo-500 border-b-2 border-indigo-500 py-2 text-lg px-1">
-              Просмотр
+            {% trans 'Просмотр' %}
           </a>
           <a href="{% url 'reports:report-update' report.pk %}" class="flex-grow text-indigo-500 border-b-2 border-indigo-500 py-2 text-lg px-1">
-              Редактировать
+            {% trans 'Редактировать' %}
           </a>
           <a href="#" class="flex-grow text-indigo-500 border-b-2 border-indigo-500 py-2 text-lg px-1">
-              Генерировать pdf
+            {% trans 'Генерировать отчет' %}
           </a>
         </div>
-        <p class="mb-5 text-xl text-red-800">Отчет № {{ report.idReport }}</p>
+        <p class="mb-5 text-xl text-red-800">{% trans 'Отчет' %} № {{ report.idReport }}</p>
         <div class="flex border-b border-gray-300 py-2">
-          <span class="text-gray-500">Год</span>
+          <span class="text-gray-500">{% trans 'Год' %}</span>
           <span class="ml-auto text-gray-900">{{ report.reportYear }}</span>
         </div>
         <div class="flex border-b border-gray-300 py-2">
-          <span class="text-gray-500">Дата произведения измерений</span>
+          <span class="text-gray-500">{% trans 'Дата произведения измерений' %}</span>
           <span class="ml-auto text-gray-900">{{ report.reportMeasuresDate }}</span>
         </div>
         <div class="flex border-b border-gray-300 py-2">
-          <span class="text-gray-500">Объект</span>
+          <span class="text-gray-500">{% trans 'Объект' %}</span>
           <span class="ml-auto text-gray-900">{{ report.reportObject }}</span>
         </div>
           <div class="flex border-b border-gray-300 py-2">
-          <span class="text-gray-500">Бригада</span>
+          <span class="text-gray-500">{% trans 'Бригада' %}</span>
           <span class="ml-auto text-gray-900">{{ report.reportTeam }}</span>
         </div>
-        <p class="mb-5 text-xl text-red-800">Погодные условия</p>
+        <p class="mb-5 text-xl text-red-800">{% trans 'Погодные условия' %}</p>
         <div class="flex border-b border-gray-300 py-2">
-          <span class="text-gray-500">Ветер</span>
+          <span class="text-gray-500">{% trans 'Ветер' %}</span>
           <span class="ml-auto text-gray-900">{{ report.reportWind }}</span>
         </div>
         <div class="flex border-b mb-6 border-gray-300 py-2">
-          <span class="text-gray-500">Погода</span>
+          <span class="text-gray-500">{% trans 'Погода' %}</span>
           <span class="ml-auto text-gray-900">{{ report.reportWeather }}</span>
         </div>
         <div class="flex border-b mb-6 border-gray-300 py-2">
-          <span class="text-gray-500">Погода за три дня</span>
+          <span class="text-gray-500">{% trans 'Погода за три дня' %}</span>
           <span class="ml-auto text-gray-900">{{ report.reportWeather3 }}</span>
         </div>
         <div class="flex border-b mb-6 border-gray-300 py-2">
-          <span class="text-gray-500">Грунт</span>
+          <span class="text-gray-500">{% trans 'Грунт' %}</span>
           <span class="ml-auto text-gray-900">{{ report.reportSoil }}</span>
         </div>
         <div class="flex border-b mb-6 border-gray-300 py-2">
-          <span class="text-gray-500">Температура</span>
+          <span class="text-gray-500">{% trans 'Температура' %}</span>
           <span class="ml-auto text-gray-900">{{ report.reportTemp }}</span>
         </div>
-        <p class="mb-5 text-xl text-red-800">Инструменты измерений</p>
+        <p class="mb-5 text-xl text-red-800">{% trans 'Инструменты измерений' %}</p>
         {% if equipment %}
           {% for eq in equipment %}
             <div class="flex border-b mb-6 border-gray-300 py-2">
-              <span class="text-gray-500">Наименование</span>
+              <span class="text-gray-500">{% trans 'Наименование' %}</span>
               <span class="ml-auto text-gray-900">{{ eq.equipName }}</span>
             </div>
             <div class="flex border-b mb-6 border-gray-300 py-2">
-              <span class="text-gray-500">Заводской №</span>
+              <span class="text-gray-500">{% trans 'Заводской №'%}</span>
               <span class="ml-auto text-gray-900">{{ eq.equipNum }}</span>
             </div>
             <div class="flex border-b mb-6 border-gray-300 py-2">
-              <span class="text-gray-500">Метрологический диапазон измерений</span>
+              <span class="text-gray-500">{% trans 'Метрологический диапазон измерений' %}</span>
               <span class="ml-auto text-gray-900">{{ eq.equipRange }}</span>
             </div>
             <div class="flex border-b mb-6 border-gray-300 py-2">
-              <span class="text-gray-500">Метрологическая основная погрешность</span>
+              <span class="text-gray-500">{% trans 'Метрологическая основная погрешность' %}</span>
               <span class="ml-auto text-gray-900">{{ eq.equipError }}</span>
             </div>
             <div class="flex border-b mb-6 border-gray-300 py-2">
-              <span class="text-gray-500">Дата поверки (предыдущей)</span>
+              <span class="text-gray-500">{% trans 'Дата поверки (предыдущей)' %}</span>
               <span class="ml-auto text-gray-900">{{ eq.equipDateCur }}</span>
             </div>
             <div class="flex border-b mb-6 border-gray-300 py-2">
-              <span class="text-gray-500">Дата поверки (следующей)</span>
+              <span class="text-gray-500">{% trans 'Дата поверки (следующей)' %}</span>
               <span class="ml-auto text-gray-900">{{ eq.equipDateNext }}</span>
             </div>
             <div class="flex border-b mb-6 border-gray-300 py-2">
-              <span class="text-gray-500">№ свидетельства поверки</span>
+              <span class="text-gray-500">{% trans '№ свидетельства поверки' %}</span>
               <span class="ml-auto text-gray-900">{{ eq.equipDocNum }}</span>
             </div>
           {% endfor %}
         {% else %}
           <p>Отсутствует</p>
         {% endif %}
-        <p class="mb-5 mt-5 text-xl text-red-800">Электротехнические измерения</p>
+        <p class="mb-5 mt-5 text-xl text-red-800">{% trans 'Электротехнические измерения' %}</p>
         <div class="flex border-b mb-6 border-gray-300 py-2">
-          <span class="text-gray-500">Питающее напряжение СОМ</span>
+          <span class="text-gray-500">{% trans 'Питающее напряжение СОМ' %}</span>
           <span class="ml-auto text-gray-900">{{ report.reportElVoltage }}</span>
         </div>
         <div class="flex border-b mb-6 border-gray-300 py-2">
-          <span class="text-gray-500">Марка кабеля СОМ (тип слева)</span>
+          <span class="text-gray-500">{% trans 'Марка кабеля СОМ (тип слева)' %}</span>
           <span class="ml-auto text-gray-900">{{ report.reportElCableL }}</span>
         </div>
         <div class="flex  border-b mb-6 border-gray-300 py-2">
-          <span class="text-gray-500">Марка кабеля СОМ (сечение справа)</span>
+          <span class="text-gray-500">{% trans 'Марка кабеля СОМ (сечение справа)' %}</span>
           <span class="ml-auto text-gray-900">{{ report.reportElCableR }}</span>
         </div>
         <div class="flex  border-b mb-6 border-gray-300 py-2">
-          <span class="text-gray-500">Молниеприемник – трос молниеприемника</span>
+          <span class="text-gray-500">{% trans 'Трос молниеприемника' %}</span>
           <span class="ml-auto text-gray-900">{{ report.reportElRope }}</span>
         </div>
         <div class="flex  border-b mb-6 border-gray-300 py-2">
-          <span class="text-gray-500">Шина (проводник) контура заземления</span>
+          <span class="text-gray-500">{% trans 'Шина контура заземления' %}</span>
           <span class="ml-auto text-gray-900">{{ report.reportElBus }}</span>
         </div>
         <div class="flex  border-b mb-6 border-gray-300 py-2">
-          <p class="mb-5 mt-5 text-xl text-red-800">Оборудование на АМС</p>
+          <p class="mb-5 mt-5 text-xl text-red-800">{% trans 'Оборудование на АМС' %}</p>
           <div class="mt-7 ml-auto text-gray-900">
           <table class="mt-7 table form-table table-bordered table-sm">
             <thead class="text-center">
             <tr>
-                <th>Тип</th>
-                <th>Высота</th>
-                <th>Размеры</th>
-                <th>Количество</th>
-                <th>Производитель</th>
-                <th>Модель</th>
-                <th>Оператор</th>
-                <th>Примечание</th>
+                <th>{% trans 'Тип' %}</th>
+                <th>{% trans 'Высота' %}</th>
+                <th>{% trans 'Размеры' %}</th>
+                <th>{% trans 'Количество' %}</th>
+                <th>{% trans 'Производитель' %}</th>
+                <th>{% trans 'Модель' %}</th>
+                <th>{% trans 'Оператор' %}</th>
+                <th>{% trans 'Примечание' %}</th>
             </tr>
             </thead>
             <tbody>
@@ -162,11 +166,11 @@
           </div>
         </div>
         <div class="flex  border-b mb-6 border-gray-300 py-2">
-          <p class="mb-5 mt-5 text-xl text-red-800">Результаты геодезических измерений</p>
+          <p class="mb-5 mt-5 text-xl text-red-800">{% trans 'Результаты геодезических измерений' %}</p>
           <span class="text-gray-500">{{ report.reportPhotosRes }}</span>
         </div>
         <div class="flex  border-b mb-6 border-gray-300 py-2">
-          <p class="mb-5 mt-5 text-xl text-red-800">Схема АМС</p>
+          <p class="mb-5 mt-5 text-xl text-red-800">{% trans 'Схема АМС' %}</p>
           <span class="text-gray-500">{{ report.reportPDataAms }}</span>
         </div>
 

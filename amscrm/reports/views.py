@@ -137,23 +137,29 @@ def generate_pdf(request, *args, **kwargs):
     report = get_object_or_404(Report, pk=pk)
     equipment = Equipment.objects.filter(idEquipment=report.reportEquipment_id)
     ams_equip = json.loads(report.reportEquipAms)
+    context = {
+        'report': report,
+        'equipment': equipment,
+        'ams_equip': ams_equip
+    }
+    return render(request, "reports/pdf.html", context)
 
-    # Обработка шаблона
-    html_string = render_to_string('reports/pdf.html', {'report': report, 'equipment': equipment, 'ams_equip': ams_equip})
-    html = HTML(string=html_string, base_url=request.build_absolute_uri())
-    result = html.write_pdf()
+    # # Обработка шаблона
+    # html_string = render_to_string('reports/pdf.html', {'report': report, 'equipment': equipment, 'ams_equip': ams_equip})
+    # html = HTML(string=html_string, base_url=request.build_absolute_uri())
+    # result = html.write_pdf()
 
-    # Создание http ответа
-    pdf = html.write_pdf()
-    response = HttpResponse(pdf, content_type='application/pdf;')
-    response['Content-Disposition'] = 'inline; filename=report.pdf'
-    response['Content-Transfer-Encoding'] = 'binary'
-    with tempfile.NamedTemporaryFile(delete=True) as output:
-        output.write(result)
-        output.flush()
-        output = open(output.name, 'rb')
-        response.write(output.read())
-    return response
+    # # Создание http ответа
+    # pdf = html.write_pdf()
+    # response = HttpResponse(pdf, content_type='application/pdf;')
+    # response['Content-Disposition'] = 'inline; filename=report.pdf'
+    # response['Content-Transfer-Encoding'] = 'binary'
+    # with tempfile.NamedTemporaryFile(delete=True) as output:
+    #     output.write(result)
+    #     output.flush()
+    #     output = open(output.name, 'rb')
+    #     response.write(output.read())
+    # return response
 
 class UploadTemplateView(generic.TemplateView):
     template_name = 'reports/json_from_file.html'
