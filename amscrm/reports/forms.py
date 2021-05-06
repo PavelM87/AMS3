@@ -3,6 +3,35 @@ from django import forms
 from .models import Report, Operator
 
 
+class ResultDataForm(forms.Form):
+    distance = forms.IntegerField(min_value=0,label='Pасстояние')
+    height_1 = forms.IntegerField(min_value=0,)
+    height_2 = forms.IntegerField(min_value=0,)
+    height_3 = forms.IntegerField(min_value=0,)
+    height_4 = forms.IntegerField(min_value=0,)
+    height_5 = forms.IntegerField(min_value=0,)
+    c_left_1_0 = forms.DecimalField(min_value=0, max_digits=7, decimal_places=1)
+    c_left_1_1 = forms.DecimalField(min_value=0,max_digits=7, decimal_places=1)
+    c_left_2_0 = forms.DecimalField(min_value=0,max_digits=7, decimal_places=1)
+    c_left_2_1 = forms.DecimalField(min_value=0,max_digits=7, decimal_places=1)
+    c_left_3_0 = forms.DecimalField(min_value=0,max_digits=7, decimal_places=1)
+    c_left_3_1 = forms.DecimalField(min_value=0,max_digits=7, decimal_places=1)
+    c_left_4_0 = forms.DecimalField(min_value=0,max_digits=7, decimal_places=1)
+    c_left_4_1 = forms.DecimalField(min_value=0,max_digits=7, decimal_places=1)
+    c_left_5_0 = forms.DecimalField(min_value=0,max_digits=7, decimal_places=1)
+    c_left_5_1 = forms.DecimalField(min_value=0,max_digits=7, decimal_places=1)
+    c_right_1_0 = forms.DecimalField(min_value=0,max_digits=7, decimal_places=3)
+    c_right_1_1 = forms.DecimalField(min_value=0,max_digits=7, decimal_places=3)
+    c_right_2_0 = forms.DecimalField(min_value=0,max_digits=7, decimal_places=3)
+    c_right_2_1 = forms.DecimalField(min_value=0,max_digits=7, decimal_places=3)
+    c_right_3_0 = forms.DecimalField(min_value=0,max_digits=7, decimal_places=3)
+    c_right_3_1 = forms.DecimalField(min_value=0,max_digits=7, decimal_places=3)
+    c_right_4_0 = forms.DecimalField(min_value=0,max_digits=7, decimal_places=3)
+    c_right_4_1 = forms.DecimalField(min_value=0,max_digits=7, decimal_places=3)
+    c_right_5_0 = forms.DecimalField(min_value=0,max_digits=7, decimal_places=3)
+    c_right_5_1 = forms.DecimalField(min_value=0,max_digits=7, decimal_places=3)
+
+
 class AMSEquipmentForm(forms.Form):
     EQ_TYPES = (
         ('panel_antenna', 'панельная антенна'),
@@ -36,7 +65,6 @@ class ReportModelForm(forms.ModelForm):
             'reportYear',
             'reportObject',
             'reportTemplate',
-            'reportData',
             'reportTeam',
             'reportEquipment',
             'reportWind',
@@ -56,7 +84,6 @@ class ReportModelForm(forms.ModelForm):
             'reportYear': 'Год',
             'reportObject': 'Объект',
             'reportTemplate': 'Шаблон',
-            'reportData': 'Данные',
             'reportTeam': 'Бригада',
             'reportEquipment': 'Инструменты измерений',
             'reportWind': 'Ветер',

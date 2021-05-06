@@ -20,6 +20,7 @@
     <form method="post" class="mt-5 bg-blue-200">
         {% csrf_token %}
         {{ formset.management_form }}
+        {{ formset_res.management_form }}
         <p class="mt-5">{{ form.reportYear.label }} {{ form.reportYear }}</p>
         <p class="mt-5">{{ form.reportObject.label }} {{ form.reportObject }}</p>
         <p class="mt-5">{{ form.reportTemplate.label }} {{ form.reportTemplate }}</p>
@@ -39,7 +40,7 @@
         <p class="mt-5">{{ form.reportElBus.label }} {{ form.reportElBus }}</p>
         <p class="mt-5">{{ form.reportMeasuresDate.label }} {{ form.reportMeasuresDate }}</p>
         <hr>
-        <table class="mt-7 table form-table table-bordered table-sm">
+        <table bgcolor="#ffcc00" class="mt-7 table form-table table-bordered table-sm">
             <thead class="text-center">
                 <tr>
                     <th>Тип</th>
@@ -96,7 +97,75 @@
                 </td>
             </tr>
             </tbody>
-        </table>              
+        </table>   
+
+        <h1 class="mt-5">Результаты геодезических измерений: </h1>
+        <div style="display:flex; justify-content:space-around">
+            <div>Стоянка А</div>
+            <div>Стоянка В</div>
+        </div>
+        <div style="display:flex; justify-content:space-around">
+            {% for res in formset_res %}
+            <table bgcolor="#ffcc00" class="mt-5 table form-table table-bordered table-sm">
+                <tbody>
+                    <tr>
+                        <th>Расстояние:</th>
+                        <td colspan="2">{{ res.distance }}</td>
+                    </tr>
+                    <tr>
+                        <th>Высота</th>
+                        <th>КЛ</th>
+                        <th>КП</th>
+                    </tr>
+                    <tr>
+                        <td rowspan="2">{{ res.height_1 }}</td>
+                        <td>{{ res.c_left_1_0 }}</td>
+                        <td>{{ res.c_right_1_0 }}</td>
+                    </tr>
+                    <tr>
+                        <td>{{ res.c_left_1_1 }}</td>
+                        <td>{{ res.c_right_1_1 }}</td>
+                    </tr>
+                    <tr>
+                        <td rowspan="2">{{ res.height_2 }}</td>
+                        <td>{{ res.c_left_2_0 }}</td>
+                        <td>{{ res.c_right_2_0 }}</td>
+                    </tr>
+                    <tr>
+                        <td>{{ res.c_left_2_1 }}</td>
+                        <td>{{ res.c_right_2_1 }}</td>
+                    </tr>
+                    <tr>
+                        <td rowspan="2">{{ res.height_3 }}</td>
+                        <td>{{ res.c_left_3_0 }}</td>
+                        <td>{{ res.c_right_3_0 }}</td>
+                    </tr>
+                    <tr>
+                        <td>{{ res.c_left_3_1 }}</td>
+                        <td>{{ res.c_right_3_1 }}</td>
+                    </tr>
+                    <tr>
+                        <td rowspan="2">{{ res.height_4 }}</td>
+                        <td>{{ res.c_left_4_0 }}</td>
+                        <td>{{ res.c_right_4_0 }}</td>
+                    </tr>
+                    <tr>
+                        <td>{{ res.c_left_4_1 }}</td>
+                        <td>{{ res.c_right_4_1 }}</td>
+                    </tr>
+                    <tr>
+                        <td rowspan="2">{{ res.height_5 }}</td>
+                        <td>{{ res.c_left_5_0 }}</td>
+                        <td>{{ res.c_right_5_0 }}</td>
+                    </tr>
+                    <tr>
+                        <td>{{ res.c_left_5_1 }}</td>
+                        <td>{{ res.c_right_5_1 }}</td>
+                    </tr>
+                </tbody>
+            </table>
+            {% endfor %}
+        </div>                  
         <button type="submit" class="mt-5 w-full text-white bg-blue-500 hover:bg-blue-600 px-3 py-3 rounded-md">
             Подтвердить
         </button>

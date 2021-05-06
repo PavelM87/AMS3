@@ -12,9 +12,6 @@
         <h2 class="text-sm title-font text-gray-500 tracking-widest">{% trans 'Отчет' %}</h2>
         <h1 class="text-gray-900 text-3xl title-font font-medium mb-4">{% trans 'Отчет' %} № {{ report.idReport }}</h1>
         <div class="flex mb-4">
-          <a href="#" class="flex-grow text-indigo-500 border-b-2 border-indigo-500 py-2 text-lg px-1">
-            {% trans 'Просмотр' %}
-          </a>
           <a href="{% url 'reports:report-update' report.pk %}" class="flex-grow text-indigo-500 border-b-2 border-indigo-500 py-2 text-lg px-1">
             {% trans 'Редактировать' %}
           </a>
@@ -165,10 +162,73 @@
           </table>
           </div>
         </div>
-        <div class="flex  border-b mb-6 border-gray-300 py-2">
-          <p class="mb-5 mt-5 text-xl text-red-800">{% trans 'Результаты геодезических измерений' %}</p>
-          <span class="text-gray-500">{{ report.reportPhotosRes }}</span>
+        <p class="mb-5 mt-5 text-xl text-red-800">Результаты геодезических измерений: </p>
+        <div style="display:flex; justify-content:space-around">
+            <div>Стоянка А</div>
+            <div>Стоянка В</div>
         </div>
+        <div style="display:flex; justify-content:space-around">
+            {% for res in result_data %}
+            <table bgcolor="#ffcc00" class="mt-5 table form-table table-bordered table-sm">
+                <tbody>
+                    <tr>
+                        <th>Расстояние:</th>
+                        <td colspan="2">{{ res.distance }}</td>
+                    </tr>
+                    <tr>
+                        <th>Высота</th>
+                        <th>КЛ</th>
+                        <th>КП</th>
+                    </tr>
+                    <tr>
+                        <td rowspan="2">{{ res.height_1 }}</td>
+                        <td>{{ res.c_left_1_0 }}</td>
+                        <td>{{ res.c_right_1_0 }}</td>
+                    </tr>
+                    <tr>
+                        <td>{{ res.c_left_1_1 }}</td>
+                        <td>{{ res.c_right_1_1 }}</td>
+                    </tr>
+                    <tr>
+                        <td rowspan="2">{{ res.height_2 }}</td>
+                        <td>{{ res.c_left_2_0 }}</td>
+                        <td>{{ res.c_right_2_0 }}</td>
+                    </tr>
+                    <tr>
+                        <td>{{ res.c_left_2_1 }}</td>
+                        <td>{{ res.c_right_2_1 }}</td>
+                    </tr>
+                    <tr>
+                        <td rowspan="2">{{ res.height_3 }}</td>
+                        <td>{{ res.c_left_3_0 }}</td>
+                        <td>{{ res.c_right_3_0 }}</td>
+                    </tr>
+                    <tr>
+                        <td>{{ res.c_left_3_1 }}</td>
+                        <td>{{ res.c_right_3_1 }}</td>
+                    </tr>
+                    <tr>
+                        <td rowspan="2">{{ res.height_4 }}</td>
+                        <td>{{ res.c_left_4_0 }}</td>
+                        <td>{{ res.c_right_4_0 }}</td>
+                    </tr>
+                    <tr>
+                        <td>{{ res.c_left_4_1 }}</td>
+                        <td>{{ res.c_right_4_1 }}</td>
+                    </tr>
+                    <tr>
+                        <td rowspan="2">{{ res.height_5 }}</td>
+                        <td>{{ res.c_left_5_0 }}</td>
+                        <td>{{ res.c_right_5_0 }}</td>
+                    </tr>
+                    <tr>
+                        <td>{{ res.c_left_5_1 }}</td>
+                        <td>{{ res.c_right_5_1 }}</td>
+                    </tr>
+                </tbody>
+            </table>
+            {% endfor %}
+        </div>          
         <div class="flex  border-b mb-6 border-gray-300 py-2">
           <p class="mb-5 mt-5 text-xl text-red-800">{% trans 'Схема АМС' %}</p>
           <span class="text-gray-500">{{ report.reportPDataAms }}</span>

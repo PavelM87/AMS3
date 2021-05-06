@@ -131,10 +131,10 @@ LOCALE_PATHS = (
     os.path.join(BASE_DIR, 'locale'),
 )
 
-gettext = lambda x: x
+
 LANGUAGES = (
-    ('ru', gettext('Russia')),
-    ('en', gettext('English')),
+    ('ru', 'Russia'),
+    ('en', 'English'),
 )
 
 # Static files (CSS, JavaScript, Images)
